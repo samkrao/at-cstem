@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:atcstem;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+app:
+  jwt:
+    # DEV ONLY. Change before production!
+    secret: "CHANGE_ME_TO_A_LONG_RANDOM_SECRET_FOR_AT_CSTEM"
+    issuer: "at-cstem.com"
+    ttlMinutes: 120
+
+cors:
+  allowedOrigins:
+    - "http://localhost:3000"
