@@ -43,7 +43,6 @@ public class User extends PanacheEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    // Custom queries
     public static User findByEmail(String email) {
         return find("email", email).firstResult();
     }

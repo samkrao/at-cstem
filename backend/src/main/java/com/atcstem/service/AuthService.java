@@ -28,23 +28,19 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        // Check if user already exists
         if (User.existsByEmail(request.email)) {
             throw new IllegalArgumentException("Email already registered");
         }
 
-        // Create new user
         User user = new User();
         user.name = request.name;
         user.email = request.email;
         user.password = BcryptUtil.bcryptHash(request.password);
 
-        // Persist user
         user.persist();
 
         LOG.infof("New user registered: %s", user.email);
 
-        // Generate JWT token
         String token = generateToken(user);
 
         return new AuthResponse(
@@ -57,21 +53,18 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        // Find user by email
         User user = User.findByEmail(request.email);
 
         if (user == null) {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        // Verify password
         if (!BcryptUtil.matches(request.password, user.password)) {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
         LOG.infof("User logged in: %s", user.email);
 
-        // Generate JWT token
         String token = generateToken(user);
 
         return new AuthResponse(
